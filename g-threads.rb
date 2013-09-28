@@ -1,7 +1,7 @@
 require 'open-uri'
 require 'nokogiri'
 require 'mechanize'
-require 'spreadsheet'
+#require 'spreadsheet'
 require 'json'
 
 __FILE__ == $0 ? ( REPO_NAME = __FILE__.split(".")[0] ) : ""
@@ -18,21 +18,23 @@ def google_search(query)
 end
 
 
-journals = File.open('journals_complete_list.txt').read().split("\n")
+journals = File.open('example_input.txt').read().split("\n")
 output_file = File.open("#{REPO_NAME}_output.json", 'w')
 
+final = []
+
 for journal in journals
-  final << Thread.new(journal) { |j|
+    final << Thread.new(journal) { |j|
 
-    puts "fetching: %s" % j
-    page = google_search("#{j}")
-    puts "resolved: %s" % j
+        puts "fetching: %s" % j
+        page = google_search("#{j}")
+        puts "resolved: %s" % j
 
-    journal_url = page.search('#ires').search('li')[0].search('h3').search('a')[0].attributes['href'].text().split('&')[0].split('=')[1]
-  
-    output_file.write("#{URI::decode(journal_url)}\n")
+        journal_url = page.search('#ires').search('li')[0].search('h3').search('a')[0].attributes['href'].text().split('&')[0].split('=')[1]
+      
+        output_file.write("#{URI::decode(journal_url)}\n")
 
-  }
+    }
 end
 
 final.each { |f| f.join }

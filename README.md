@@ -4,4 +4,5 @@ Yo dawg!  I head you like scraping!
 * g-threads is a simple tool to run ghett0-fast threaded google queries
 
 
-<pre> ruby g-threads.rb</pre>
+<pre>$ bundle install</pre>
+<pre>$ ruby g-threads.rb</pre>
